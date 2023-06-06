@@ -24,7 +24,17 @@ public class UserServiceController {
 
     @PostMapping(value = "/create")
     public UserDto createUser(@RequestBody @Validated UserDto userDto){
-        return  userService.createUser(userDto);
+        return  userService.createUser(userDto).getBody();
+    }
+
+    @PostMapping(value = "/update/{id}")
+    public UserDto updateUser(@PathVariable Long id,  @RequestBody @Validated UserDto userDto) throws Throwable {
+        return  userService.updateUser(id,userDto).getBody();
+    }
+
+    @PostMapping(value = "/{id}")
+    public UserDto getUserById(@PathVariable Long id) throws Throwable {
+        return  userService.getUserById(id).getBody();
     }
 
 

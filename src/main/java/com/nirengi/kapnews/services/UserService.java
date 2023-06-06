@@ -12,7 +12,7 @@ public interface UserService {
 
     public List<UserDto> getAllUsers();
 
-    public UserDto createUser(UserDto userDto);
+    public ResponseEntity<UserDto> createUser(UserDto userDto);
     public ResponseEntity<UserDto> getUserById(Long id);
 
     public ResponseEntity<UserDto> updateUser(Long id, UserDto userDto) throws Throwable;

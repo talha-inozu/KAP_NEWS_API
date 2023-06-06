@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,21 +35,51 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserDto createUser(UserDto userDto) {
+    public ResponseEntity<UserDto> createUser(UserDto userDto) {
+
+        List<UserDto> allUsers = getAllUsers();
+        for(UserDto user : allUsers){
+            if(user.getEmail().equals(userDto.getEmail()))
+                throw  new RuntimeException("Email is already used !");
+        }
+
+
+
         UserEntity userEntity = dtoToEntity(userDto);
         UserEntity responseEntity = userRepository.save(userEntity);
         UserDto responseDto = entityToDto(responseEntity);
-        return  responseDto;
+        return  ResponseEntity.ok(responseDto);
     }
 
     @Override
     public ResponseEntity<UserDto> getUserById(Long id) {
-        return null;
+        UserEntity userEntity =  userRepository.findById(id).orElseThrow(()->new RuntimeException("User not exist !"));
+        return ResponseEntity.ok(entityToDto(userEntity));
     }
 
     @Override
-    public ResponseEntity<UserDto> updateUser(Long id, UserDto userDto) throws Throwable {
-        return null;
+    public ResponseEntity<UserDto> updateUser(Long id, UserDto userDto) {
+        UserEntity userEntity =  userRepository.findById(id).orElseThrow(()->new RuntimeException("User not exist !"));
+        Class<?> objectClass = userEntity.getClass();
+        UserEntity newEntity = dtoToEntity(userDto);
+        Field[] fields = objectClass.getDeclaredFields();
+
+
+        for (int i = 0; i < fields.length; i++) {
+            Field field = fields[i];
+            field.setAccessible(true); // Allow access to private fields
+            System.out.println(field.getName());
+
+            try {
+                field.set(userEntity,field.get(newEntity));
+            } catch (Exception e) {
+               System.out.println(e.getMessage());
+            }
+        }
+
+        UserEntity responseEntity = userRepository.save(userEntity);
+        return ResponseEntity.ok(entityToDto(responseEntity));
+
     }
 
     @Override
@@ -68,4 +99,5 @@ public class UserServiceImpl implements UserService{
         UserEntity userEntity = modelMapper.map(userDto,UserEntity.class);
         return  userEntity;
     }
+
 }
