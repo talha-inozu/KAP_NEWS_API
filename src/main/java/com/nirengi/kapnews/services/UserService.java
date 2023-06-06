@@ -12,6 +12,8 @@ public interface UserService {
 
     public List<UserDto> getAllUsers();
 
+    public List<String> getAllUsersEmails();
+
     public ResponseEntity<UserDto> createUser(UserDto userDto);
     public ResponseEntity<UserDto> getUserById(Long id);
 

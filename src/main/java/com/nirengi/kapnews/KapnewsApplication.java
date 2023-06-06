@@ -1,6 +1,7 @@
 package com.nirengi.kapnews;
 
 import com.nirengi.kapnews.schedule.ScheduledTasks;
+import com.nirengi.kapnews.services.EmailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,10 +18,9 @@ import java.net.URISyntaxException;
 @SpringBootApplication
 @EnableScheduling
 public class KapnewsApplication {
-    @Autowired
-    ScheduledTasks scheduledTasks;
-    public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException, JSONException {
 
+
+    public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException, JSONException {
         SpringApplication.run(KapnewsApplication.class, args);
     }
 

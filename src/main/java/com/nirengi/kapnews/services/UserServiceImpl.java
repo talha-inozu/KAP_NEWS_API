@@ -33,6 +33,17 @@ public class UserServiceImpl implements UserService{
         }
         return responseList ;
     }
+    @Override
+    public List<String> getAllUsersEmails() {
+        List<String> responseList = new ArrayList<>();
+
+        Iterable<UserEntity> entities = userRepository.findAll();
+
+        for(UserEntity entity:entities){
+            responseList.add(entity.getEmail());
+        }
+        return responseList ;
+    }
 
     @Override
     public ResponseEntity<UserDto> createUser(UserDto userDto) {

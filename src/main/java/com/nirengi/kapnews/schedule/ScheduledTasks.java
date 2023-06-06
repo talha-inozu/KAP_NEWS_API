@@ -12,6 +12,8 @@ import java.util.List;
 import com.nirengi.kapnews.dto.DisclosureDto;
 import com.nirengi.kapnews.services.DisclosureService;
 import com.nirengi.kapnews.services.DisclosureServiceImpl;
+import com.nirengi.kapnews.services.EmailService;
+import com.nirengi.kapnews.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,12 @@ public class ScheduledTasks {
     private  boolean firstTask = true;
     @Autowired
     DisclosureService disclosureService;
+
+    @Autowired
+    EmailService emailService;
+
+    @Autowired
+    UserService userService;
 
     @Scheduled(initialDelay = 900000, fixedRate = 900000)
     public void takeDisclosures( ) {
@@ -71,14 +79,17 @@ public class ScheduledTasks {
         }
 
         if(newDisclosures.size() > 0 ){
-            System.out.println("New disclosuresss !!");
+            List<String> userEmailList = userService.getAllUsersEmails();
+            String context = newDisclosures.toString();
+            emailService.sendEmail(context,userEmailList);
+            log.info("Emails sended !");
         }
         log.info("Take Disclosure is done !");
 
     }
 
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 26400000)
     public void flushDailyDisclosures(){
         DisclosureServiceImpl.dailyDisclosures.clear();
     }
