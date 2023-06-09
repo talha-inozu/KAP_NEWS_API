@@ -32,7 +32,7 @@ public class DisclosureEntity extends BaseEntity {
     @Column(name = "summary")
     private String summary;
     @Column(name = "publishDate")
-    private Date publishDate;
+    private String publishDate;
 
 
 }

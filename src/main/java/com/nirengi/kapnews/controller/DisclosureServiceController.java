@@ -2,7 +2,6 @@ package com.nirengi.kapnews.controller;
 
 import com.nirengi.kapnews.dto.DisclosureDto;
 import com.nirengi.kapnews.services.DisclosureService;
-import com.nirengi.kapnews.services.DisclosureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

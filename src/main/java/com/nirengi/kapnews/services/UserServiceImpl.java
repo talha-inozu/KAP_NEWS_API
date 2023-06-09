@@ -22,6 +22,9 @@ public class UserServiceImpl implements UserService{
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    EmailService emailService;
+
     @Override
     public List<UserDto> getAllUsers() {
         List<UserDto> responseList = new ArrayList<>();
@@ -54,7 +57,7 @@ public class UserServiceImpl implements UserService{
                 throw  new RuntimeException("Email is already used !");
         }
 
-
+        emailService.sendEmail("Welcome to KAPNEWSAPI !",userDto.getEmail());
 
         UserEntity userEntity = dtoToEntity(userDto);
         UserEntity responseEntity = userRepository.save(userEntity);

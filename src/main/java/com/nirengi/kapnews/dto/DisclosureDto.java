@@ -22,6 +22,6 @@ public class DisclosureDto {
     private String stockCode;
     private String title;
     private String summary;
-    private Date publishDate;
+    private String publishDate;
 
 }

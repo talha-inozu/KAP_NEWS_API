@@ -6,6 +6,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,7 +26,12 @@ public class EmailServiceImpl implements EmailService{
             message.setText(context);
             emailSender.send(message);
         }
+    }
 
-
+    @Override
+    public void sendEmail(String context, String receiverEmail) {
+        List<String> emaiList = new ArrayList<>();
+        emaiList.add(receiverEmail);
+        sendEmail(context,emaiList);
     }
 }

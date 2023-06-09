@@ -1,11 +1,8 @@
 package com.nirengi.kapnews.services;
 
 import com.nirengi.kapnews.data.entity.DisclosureEntity;
-import com.nirengi.kapnews.data.entity.UserEntity;
 import com.nirengi.kapnews.data.repository.DisclosureRepository;
-import com.nirengi.kapnews.data.repository.UserRepository;
 import com.nirengi.kapnews.dto.DisclosureDto;
-import com.nirengi.kapnews.dto.UserDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +47,9 @@ public class DisclosureServiceImpl implements DisclosureService{
         }
 
         DisclosureEntity disclosureEntity = dtoToEntity(disclosureDto);
+
         dailyDisclosures.add(disclosureDto);
+
         DisclosureEntity responseEntity = disclosureRepository.save(disclosureEntity);
         return  ResponseEntity.ok(entityToDto(responseEntity));
     }
