@@ -14,6 +14,7 @@ import java.util.List;
 @Service
 public class DisclosureServiceImpl implements DisclosureService{
 
+
     public static List<DisclosureDto> dailyDisclosures = new ArrayList<>();
 
 

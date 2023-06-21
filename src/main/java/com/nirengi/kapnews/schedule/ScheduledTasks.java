@@ -16,6 +16,9 @@ import com.nirengi.kapnews.services.DisclosureService;
 import com.nirengi.kapnews.services.DisclosureServiceImpl;
 import com.nirengi.kapnews.services.EmailService;
 import com.nirengi.kapnews.services.UserService;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +44,13 @@ public class ScheduledTasks {
     @Autowired
     UserService userService;
 
-    @Scheduled(initialDelay = 120000, fixedRate = 120000)
+    @Scheduled(initialDelay = 120000, fixedRate = 15000)
     public void takeDisclosures( ) {
         List<DisclosureDto>  newDisclosures = new ArrayList<>();
+        HttpClient client = HttpClient.newHttpClient();
+
         try{
-            HttpClient client = HttpClient.newHttpClient();
+
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI("https://www.kap.org.tr/tr/api/disclosures"))
                     .version(HttpClient.Version.HTTP_2)
@@ -82,8 +87,8 @@ public class ScheduledTasks {
 
         if(newDisclosures.size() > 0 ){
             boolean properDisclosureExist = false;
-            Pattern patternTitle = Pattern.compile("\\byeni\\b|\\bihale\\b|\\bortak\\b|\\byatırım\\b|\\sipariş\\b");
-            Pattern patternSummary = Pattern.compile("\\byeni\\b|\\bihale\\b|\\bortak\\b|\\sipariş\\b");
+            Pattern patternTitle = Pattern.compile("\\byeni\\b|\\bihale\\b|\\bortak\\b|\\byatırım\\b|\\bsipariş\\b|\\brapor\\b");
+            Pattern patternSummary = Pattern.compile("\\byeni\\b|\\bihale\\b|\\bortak\\b|\\bsipariş\\b|\\brapor\\b");
             Field[] fields = DisclosureDto.class.getDeclaredFields();
             List<String> userEmailList = userService.getAllUsersEmails();
             String context = "";
@@ -102,7 +107,36 @@ public class ScheduledTasks {
                             }
                         }
                     }
-                    disclosureString = disclosureString +"Disclosure Link : "+ "https://www.kap.org.tr/tr/Bildirim/" + newDisclosure.getDisclosureId();
+
+                    List<String> stockCodes = List.of(newDisclosure.getStockCode().replaceAll(" ","").split(","));
+
+                    disclosureString = disclosureString
+                            +"Disclosure Link : "+ "https://www.kap.org.tr/tr/Bildirim/" + newDisclosure.getDisclosureId();
+
+                    for(String code : stockCodes){
+
+                        try{
+                            HttpRequest request = HttpRequest.newBuilder()
+                                    .uri(new URI("https://fintables.com/sirketler/" + code.toUpperCase() + "/finansal-tablolar/gelir-tablosu"))
+                                    .version(HttpClient.Version.HTTP_2)
+                                    .GET()
+                                    .build();
+
+                            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                            Document doc = Jsoup.parse(response.body());
+                            Elements element = doc.select("span");
+
+                            disclosureString = disclosureString
+                            +"\n" + code
+                            +"\nLast Quarter Income = " + (element.size() > 13 ?  element.get(14).text() + ".000 TL" : "There is no data about it")
+                            +"\nFintables financial Link : "+ "https://fintables.com/sirketler/"+code.toUpperCase()+"/finansal-tablolar/gelir-tablosu"
+                            +"\nTradingview  live stock graph Link : " + "https://tr.tradingview.com/chart/?symbol=BIST%3A"+code.toUpperCase()
+                            +"\n";
+                        }catch (Exception e){
+                            throw  new RuntimeException(e.getMessage());
+                        }
+                    }
+
                     context = context  + "\n\n"  + disclosureString;
                 }
 

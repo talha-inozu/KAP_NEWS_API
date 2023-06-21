@@ -4,9 +4,11 @@ import com.nirengi.kapnews.data.entity.DisclosureEntity;
 import com.nirengi.kapnews.dto.DisclosureDto;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface DisclosureService {
+
     public List<DisclosureDto> getAllDisclosures();
 
     public ResponseEntity<DisclosureDto> saveDisclosure(DisclosureDto disclosureDto);
