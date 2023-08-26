@@ -1,11 +1,11 @@
 package com.nirengi.kapnews.services;
 
-import com.nirengi.kapnews.data.entity.DisclosureEntity;
-import com.nirengi.kapnews.dto.DisclosureDto;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.nirengi.kapnews.data.entity.DisclosureEntity;
+import com.nirengi.kapnews.dto.DisclosureDto;
 
 public interface DisclosureService {
 
@@ -13,11 +13,10 @@ public interface DisclosureService {
 
     public ResponseEntity<DisclosureDto> saveDisclosure(DisclosureDto disclosureDto);
 
-
     public ResponseEntity<DisclosureDto> getDisclosureById(Long id);
 
-
     //Model Wrapper
-    public  DisclosureDto entityToDto(DisclosureEntity disclosureEntity);
+    public DisclosureDto entityToDto(DisclosureEntity disclosureEntity);
+
     public DisclosureEntity dtoToEntity(DisclosureDto disclosureDto);
 }

@@ -1,4 +1,4 @@
-package com.nirengi.kapnews.bean;
+package com.nirengi.kapnews.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -6,13 +6,16 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
+
 import org.springframework.beans.factory.annotation.Value;
+
 @Configuration
-public class JavaMailSenderBean {
+public class JavaMailSenderConfig {
     @Value("${spring.mail.username}")
     private String username;
     @Value("${spring.mail.password}")
     private String password;
+
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

@@ -1,22 +1,21 @@
 package com.nirengi.kapnews.services;
 
-import com.nirengi.kapnews.data.entity.DisclosureEntity;
-import com.nirengi.kapnews.data.repository.DisclosureRepository;
-import com.nirengi.kapnews.dto.DisclosureDto;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.nirengi.kapnews.data.entity.DisclosureEntity;
+import com.nirengi.kapnews.data.repository.DisclosureRepository;
+import com.nirengi.kapnews.dto.DisclosureDto;
 
 @Service
-public class DisclosureServiceImpl implements DisclosureService{
-
+public class DisclosureServiceImpl implements DisclosureService {
 
     public static List<DisclosureDto> dailyDisclosures = new ArrayList<>();
-
 
     @Autowired
     DisclosureRepository disclosureRepository;
@@ -31,16 +30,16 @@ public class DisclosureServiceImpl implements DisclosureService{
 
         Iterable<DisclosureEntity> entities = disclosureRepository.findAll();
 
-        for(DisclosureEntity disclosureEntity:entities){
+        for (DisclosureEntity disclosureEntity : entities) {
             responseList.add(entityToDto(disclosureEntity));
         }
-        return responseList ;
+        return responseList;
     }
 
     @Override
     public ResponseEntity saveDisclosure(DisclosureDto disclosureDto) {
-        for(DisclosureDto disclosure : dailyDisclosures){
-            if(disclosure.getDisclosureId().equals(disclosureDto.getDisclosureId())){
+        for (DisclosureDto disclosure : dailyDisclosures) {
+            if (disclosure.getDisclosureId().equals(disclosureDto.getDisclosureId())) {
                 return ResponseEntity.ok().build();
             }
         }
@@ -50,7 +49,7 @@ public class DisclosureServiceImpl implements DisclosureService{
         dailyDisclosures.add(disclosureDto);
 
         DisclosureEntity responseEntity = disclosureRepository.save(disclosureEntity);
-        return  ResponseEntity.ok(entityToDto(responseEntity));
+        return ResponseEntity.ok(entityToDto(responseEntity));
     }
 
     @Override
@@ -60,13 +59,13 @@ public class DisclosureServiceImpl implements DisclosureService{
 
     @Override
     public DisclosureDto entityToDto(DisclosureEntity disclosureEntity) {
-        DisclosureDto disclosureDto = modelMapper.map(disclosureEntity,DisclosureDto.class);
-        return  disclosureDto;
+        DisclosureDto disclosureDto = modelMapper.map(disclosureEntity, DisclosureDto.class);
+        return disclosureDto;
     }
 
     @Override
     public DisclosureEntity dtoToEntity(DisclosureDto disclosureDto) {
-        DisclosureEntity disclosureEntity = modelMapper.map(disclosureDto,DisclosureEntity.class);
+        DisclosureEntity disclosureEntity = modelMapper.map(disclosureDto, DisclosureEntity.class);
         return disclosureEntity;
     }
 }

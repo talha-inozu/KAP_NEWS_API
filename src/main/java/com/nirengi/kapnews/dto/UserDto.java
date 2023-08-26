@@ -1,11 +1,12 @@
 package com.nirengi.kapnews.dto;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Data
 @NoArgsConstructor
@@ -25,6 +26,5 @@ public class UserDto {
     private String email;
     @JsonView
     private String phoneNumber;
-
 
 }
