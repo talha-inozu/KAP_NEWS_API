@@ -1,24 +1,22 @@
 package com.nirengi.kapnews.services;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
-public class EmailServiceImpl implements EmailService{
+public class EmailServiceImpl implements EmailService {
 
     @Autowired
     JavaMailSender emailSender;
 
-
     @Override
     public void sendEmail(String context, List<String> receiverEmails) {
-        for(String receiverEmail : receiverEmails){
+        for (String receiverEmail : receiverEmails) {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("kapnewsapi@gmail.com");
             message.setTo(receiverEmail);
@@ -32,6 +30,6 @@ public class EmailServiceImpl implements EmailService{
     public void sendEmail(String context, String receiverEmail) {
         List<String> emaiList = new ArrayList<>();
         emaiList.add(receiverEmail);
-        sendEmail(context,emaiList);
+        sendEmail(context, emaiList);
     }
 }

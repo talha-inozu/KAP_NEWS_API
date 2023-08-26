@@ -1,20 +1,21 @@
 package com.nirengi.kapnews.services;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-import com.nirengi.kapnews.data.entity.UserEntity;
-import com.nirengi.kapnews.data.repository.UserRepository;
-import com.nirengi.kapnews.dto.UserDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.nirengi.kapnews.data.entity.UserEntity;
+import com.nirengi.kapnews.data.repository.UserRepository;
+import com.nirengi.kapnews.dto.UserDto;
+
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
@@ -31,49 +32,50 @@ public class UserServiceImpl implements UserService{
 
         Iterable<UserEntity> entities = userRepository.findAll();
 
-        for(UserEntity entity:entities){
+        for (UserEntity entity : entities) {
             responseList.add(entityToDto(entity));
         }
-        return responseList ;
+        return responseList;
     }
+
     @Override
     public List<String> getAllUsersEmails() {
         List<String> responseList = new ArrayList<>();
 
         Iterable<UserEntity> entities = userRepository.findAll();
 
-        for(UserEntity entity:entities){
+        for (UserEntity entity : entities) {
             responseList.add(entity.getEmail());
         }
-        return responseList ;
+        return responseList;
     }
 
     @Override
     public ResponseEntity<UserDto> createUser(UserDto userDto) {
 
         List<UserDto> allUsers = getAllUsers();
-        for(UserDto user : allUsers){
-            if(user.getEmail().equals(userDto.getEmail()))
-                throw  new RuntimeException("Email is already used !");
+        for (UserDto user : allUsers) {
+            if (user.getEmail().equals(userDto.getEmail()))
+                throw new RuntimeException("Email is already used !");
         }
 
-        emailService.sendEmail("Welcome to KAPNEWSAPI !",userDto.getEmail());
+        emailService.sendEmail("Welcome to KAPNEWSAPI !", userDto.getEmail());
 
         UserEntity userEntity = dtoToEntity(userDto);
         UserEntity responseEntity = userRepository.save(userEntity);
         UserDto responseDto = entityToDto(responseEntity);
-        return  ResponseEntity.ok(responseDto);
+        return ResponseEntity.ok(responseDto);
     }
 
     @Override
     public ResponseEntity<UserDto> getUserById(Long id) {
-        UserEntity userEntity =  userRepository.findById(id).orElseThrow(()->new RuntimeException("User not exist !"));
+        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not exist !"));
         return ResponseEntity.ok(entityToDto(userEntity));
     }
 
     @Override
     public ResponseEntity<UserDto> updateUser(Long id, UserDto userDto) {
-        UserEntity userEntity =  userRepository.findById(id).orElseThrow(()->new RuntimeException("User not exist !"));
+        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not exist !"));
         Class<?> objectClass = userEntity.getClass();
         UserEntity newEntity = dtoToEntity(userDto);
         Field[] fields = objectClass.getDeclaredFields();
@@ -85,9 +87,9 @@ public class UserServiceImpl implements UserService{
             System.out.println(field.getName());
 
             try {
-                field.set(userEntity,field.get(newEntity));
+                field.set(userEntity, field.get(newEntity));
             } catch (Exception e) {
-               System.out.println(e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
 
@@ -104,14 +106,14 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto entityToDto(UserEntity userEntity) {
 
-        UserDto userDto = modelMapper.map(userEntity,UserDto.class);
-        return  userDto;
+        UserDto userDto = modelMapper.map(userEntity, UserDto.class);
+        return userDto;
     }
 
     @Override
     public UserEntity dtoToEntity(UserDto userDto) {
-        UserEntity userEntity = modelMapper.map(userDto,UserEntity.class);
-        return  userEntity;
+        UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
+        return userEntity;
     }
 
 }
