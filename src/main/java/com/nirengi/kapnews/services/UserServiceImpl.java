@@ -3,16 +3,19 @@ package com.nirengi.kapnews.services;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.nirengi.kapnews.data.entity.UserEntity;
 import com.nirengi.kapnews.data.repository.UserRepository;
 import com.nirengi.kapnews.dto.UserDto;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -99,8 +102,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Boolean>> deleteUser(Long id) throws Throwable {
-        return null;
+    public ResponseEntity deleteUser(Long id) throws Throwable {
+        try {
+            Optional<UserEntity> userEntity = userRepository.findById(id);
+            userRepository.delete(userEntity.get());
+            return ResponseEntity.ok("User deleted");
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     @Override

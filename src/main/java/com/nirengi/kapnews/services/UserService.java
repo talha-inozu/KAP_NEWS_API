@@ -20,7 +20,7 @@ public interface UserService {
 
     public ResponseEntity<UserDto> updateUser(Long id, UserDto userDto) throws Throwable;
 
-    public ResponseEntity<Map<String, Boolean>> deleteUser(Long id) throws Throwable;
+    public ResponseEntity deleteUser(Long id) throws Throwable;
 
     //Model Wrapper
     public UserDto entityToDto(UserEntity userEntity);

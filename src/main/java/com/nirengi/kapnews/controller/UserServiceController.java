@@ -3,6 +3,7 @@ package com.nirengi.kapnews.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,5 +38,10 @@ public class UserServiceController {
     @PostMapping(value = "/{id}")
     public UserDto getUserById(@PathVariable Long id) throws Throwable {
         return userService.getUserById(id).getBody();
+    }
+
+    @PostMapping(value = "/delete/{id}")
+    public ResponseEntity deleteUserById(@PathVariable Long id) throws Throwable {
+        return userService.deleteUser(id);
     }
 }
