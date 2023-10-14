@@ -32,4 +32,14 @@ public class EmailServiceImpl implements EmailService {
         emaiList.add(receiverEmail);
         sendEmail(context, emaiList);
     }
+
+    @Override
+    public void sendErrorEmail(String context, String receiverEmail) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("kapnewsapi@gmail.com");
+        message.setTo(receiverEmail);
+        message.setSubject("Error Occured In KAPNEWSAPI!");
+        message.setText(context);
+        emailSender.send(message);
+    }
 }

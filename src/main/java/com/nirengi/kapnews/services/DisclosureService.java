@@ -19,4 +19,6 @@ public interface DisclosureService {
     public DisclosureDto entityToDto(DisclosureEntity disclosureEntity);
 
     public DisclosureEntity dtoToEntity(DisclosureDto disclosureDto);
+
+    public List<DisclosureEntity> getAllDisclosureEntities();
 }

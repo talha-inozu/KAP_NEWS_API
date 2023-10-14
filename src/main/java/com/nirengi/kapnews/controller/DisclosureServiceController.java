@@ -2,6 +2,7 @@ package com.nirengi.kapnews.controller;
 
 import java.util.List;
 
+import com.nirengi.kapnews.data.entity.DisclosureEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,5 +22,8 @@ public class DisclosureServiceController {
     public List<DisclosureDto> getAllDisclosures() {
         return disclosureService.getAllDisclosures();
     }
-    
+    @GetMapping(value = "/getAllData")
+    public List<DisclosureEntity> getAllDisclosureEntities() {
+        return disclosureService.getAllDisclosureEntities();
+    }
 }

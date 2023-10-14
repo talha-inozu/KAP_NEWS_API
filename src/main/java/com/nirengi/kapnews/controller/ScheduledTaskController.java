@@ -27,4 +27,8 @@ public class ScheduledTaskController {
     public ResponseEntity<String> changeThreadWorkingRate(@PathVariable Long millisecond) {
         return scheduleService.changeThreadWorkingRate(millisecond);
     }
+    @PostMapping("/rewire-thread")
+    public ResponseEntity<String> rewireThread() {
+        return scheduleService.rewireNewThread();
+    }
 }

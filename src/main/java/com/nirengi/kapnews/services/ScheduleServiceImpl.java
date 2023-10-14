@@ -3,11 +3,13 @@ package com.nirengi.kapnews.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.nirengi.kapnews.constant.KapNewsConstants;
 import com.nirengi.kapnews.concurrent.TakeDisclosureThread;
+import com.nirengi.kapnews.exception.ThreadException;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -16,6 +18,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     TakeDisclosureThread takeDisclosureThread;
     @Autowired
     KapNewsConstants kapNewsConstants;
+    @Autowired
+    AutowireCapableBeanFactory beanFactory;
 
     @Override
     public ResponseEntity<String> startDisclosureThread() {
@@ -32,7 +36,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             }
         } catch (Exception e) {
             log.info("Error at ScheduleServiceImpl : " + e.getMessage());
-            response = "Error at ScheduleServiceImpl : " + e.getMessage();
+            throw new ThreadException("Error at ScheduleServiceImpl : " + e.getMessage());
         }
         return ResponseEntity.ok(response);
     }
@@ -51,7 +55,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             }
         } catch (Exception e) {
             log.info("Error at ScheduleServiceImpl : " + e.getMessage());
-            response = "Error at ScheduleServiceImpl : " + e.getMessage();
+            throw new ThreadException("Error at ScheduleServiceImpl : " + e.getMessage());
         }
         return ResponseEntity.ok(response);
     }
@@ -68,8 +72,14 @@ public class ScheduleServiceImpl implements ScheduleService {
             }
         } catch (Exception e) {
             log.info("Error at ScheduleServiceImpl/changeThreadWorkingRate : " + e.getMessage());
-            response = "Error at ScheduleServiceImpl/changeThreadWorkingRate : " + e.getMessage();
+            throw new ThreadException("Error at ScheduleServiceImpl/changeThreadWorkingRate : " + e.getMessage());
         }
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<String> rewireNewThread() {
+        takeDisclosureThread = beanFactory.createBean(TakeDisclosureThread.class);
+        return ResponseEntity.ok("New Bean is Wired");
     }
 }

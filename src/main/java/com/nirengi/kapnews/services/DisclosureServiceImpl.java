@@ -68,4 +68,10 @@ public class DisclosureServiceImpl implements DisclosureService {
         DisclosureEntity disclosureEntity = modelMapper.map(disclosureDto, DisclosureEntity.class);
         return disclosureEntity;
     }
+
+    @Override
+    public List<DisclosureEntity> getAllDisclosureEntities() {
+        List<DisclosureEntity> response = disclosureRepository.findAll();
+        return response;
+    }
 }
