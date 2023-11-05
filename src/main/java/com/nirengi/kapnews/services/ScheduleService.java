@@ -10,4 +10,6 @@ public interface ScheduleService {
 
     public ResponseEntity<String> changeThreadWorkingRate(Long millisecond);
 
+    public ResponseEntity<String> rewireNewThread();
+
 }
