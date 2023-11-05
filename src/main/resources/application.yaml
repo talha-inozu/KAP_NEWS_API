@@ -1,0 +1,50 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    username: <Your email>
+    password: <Your email stmp paswword>
+    port: '587'
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+          auth: 'true'
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: 'true'
+        show_sql: 'true'
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    password: password
+    username: Admin
+    url: jdbc:postgresql://localhost:5432/kapnews_db
+
+
+logging:
+  file:
+    name: ./log/blog.log
+  level:
+    org:
+      springframework:
+        web: DEBUG
+        jdbc:
+          core: TRACE
+      apache:
+        coyote:
+          http11:
+            Http11InputBuffer: DEBUG
+    root: INFO
+
+scheduled:
+  take:
+    disclosures:
+      fixedRate: '30000'
+
+server:
+  servlet:
+    context-path: /kapnewsapi
+  port: '8080'
