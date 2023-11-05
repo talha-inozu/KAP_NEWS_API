@@ -1,0 +1,14 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+  postgre-db-docker:
+    image: postgres
+    restart: always
+    container_name: "postgre-db-docker"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: Admin
+      POSTGRES_DB: kapnews_db
