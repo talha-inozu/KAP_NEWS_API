@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.nirengi.kapnews.dto.DisclosureDto;
-import com.nirengi.kapnews.dto.UserDto;
-import com.nirengi.kapnews.services.EmailService;
+import com.nirengi.kapnews.disclosure.dto.DisclosureDto;
+import com.nirengi.kapnews.user.dto.UserDto;
+import com.nirengi.kapnews.email.service.EmailService;
 
 import static java.lang.Thread.currentThread;
 
