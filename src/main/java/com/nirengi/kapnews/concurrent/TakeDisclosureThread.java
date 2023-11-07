@@ -21,12 +21,12 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import com.nirengi.kapnews.constant.KapNewsConstants;
-import com.nirengi.kapnews.dto.DisclosureDto;
-import com.nirengi.kapnews.services.DisclosureService;
-import com.nirengi.kapnews.services.EmailService;
-import com.nirengi.kapnews.services.UserService;
-import com.nirengi.kapnews.dto.UserDto;
+import com.nirengi.kapnews.core.config.KapNewsConstants;
+import com.nirengi.kapnews.disclosure.dto.DisclosureDto;
+import com.nirengi.kapnews.disclosure.service.DisclosureService;
+import com.nirengi.kapnews.email.service.EmailService;
+import com.nirengi.kapnews.user.service.UserService;
+import com.nirengi.kapnews.user.dto.UserDto;
 import com.nirengi.kapnews.exception.ThreadException;
 
 @Component
