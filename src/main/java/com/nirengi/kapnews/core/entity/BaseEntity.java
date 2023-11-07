@@ -24,23 +24,13 @@ public class BaseEntity {
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "created_by")
-    @CreatedBy
-    private String cratedBy;
 
     @Column(name = "created_date")
     @CreatedDate
     private Date createdDate;
 
-    @Column(name = "updated_by")
-    @LastModifiedBy
-    private String updatedBy;
     @Column(name = "update_date")
     @LastModifiedDate
     private Date updateDate;
 
-    @Column(name = "system_auto_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
-    private Date date;
 }
