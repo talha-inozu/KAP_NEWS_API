@@ -25,7 +25,7 @@ public class UserServiceController {
         return userService.getAllUsers();
     }
 
-    @PostMapping(value = "/create")
+    @PostMapping(value = "/register")
     public UserDto createUser(@RequestBody @Validated UserDto userDto) {
         return userService.registerUser(userDto).getBody();
     }
