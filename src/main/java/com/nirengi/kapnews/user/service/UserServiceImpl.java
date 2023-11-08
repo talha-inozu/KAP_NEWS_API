@@ -55,12 +55,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<UserDto> createUser(UserDto userDto) {
+    public ResponseEntity<UserDto> registerUser(UserDto userDto) {
 
         List<UserDto> allUsers = getAllUsers();
         for (UserDto user : allUsers) {
             if (user.getEmail().equals(userDto.getEmail()))
                 throw new RuntimeException("Email is already used !");
+            if (user.getUsername().equals(userDto.getUsername()))
+                throw new RuntimeException("Username is already used !");
         }
 
         emailService.sendEmail("Welcome to KAPNEWSAPI !", userDto.getEmail());
@@ -74,6 +76,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<UserDto> getUserById(Long id) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not exist !"));
+        return ResponseEntity.ok(entityToDto(userEntity));
+    }
+
+    @Override
+    public ResponseEntity<UserDto> getUserByUsername(String username) {
+        UserEntity userEntity = userRepository.findByUsername(username);
         return ResponseEntity.ok(entityToDto(userEntity));
     }
 

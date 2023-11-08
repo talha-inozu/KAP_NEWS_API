@@ -11,6 +11,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({ThreadException.class})
     public ResponseEntity<BaseError> handleRuntimeException(ThreadException exception, HttpServletRequest httpServletRequest) {
-        return  ResponseEntity.internalServerError().body(new BaseError(httpServletRequest.getServletPath(), exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
+        return ResponseEntity.internalServerError().body(new BaseError(httpServletRequest.getServletPath(), exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<BaseError> handleRuntimeException(Exception exception, HttpServletRequest httpServletRequest) {
+        return ResponseEntity.internalServerError().body(new BaseError(httpServletRequest.getServletPath(), exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
     }
 }

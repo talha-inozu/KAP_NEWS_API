@@ -13,9 +13,12 @@ public interface UserService {
 
     public List<String> getAllUsersEmails();
 
-    public ResponseEntity<UserDto> createUser(UserDto userDto);
+    public ResponseEntity<UserDto> registerUser(UserDto userDto);
 
     public ResponseEntity<UserDto> getUserById(Long id);
+
+    public ResponseEntity<UserDto> getUserByUsername(String username);
+
 
     public ResponseEntity<UserDto> updateUser(Long id, UserDto userDto) throws Throwable;
 
