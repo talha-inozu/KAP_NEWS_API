@@ -7,5 +7,5 @@ import com.nirengi.kapnews.user.dto.UserEntity;
 
 @Repository
 public interface UserRepository  extends JpaRepository<UserEntity,Long>  {
-
+    public UserEntity findByUsername(String username);
 }
