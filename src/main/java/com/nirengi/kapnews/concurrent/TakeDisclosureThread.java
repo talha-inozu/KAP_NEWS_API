@@ -4,8 +4,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -66,7 +67,6 @@ public class TakeDisclosureThread extends Thread {
                                 .GET()
                                 .build();
 
-
                         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
                         JSONArray array = new JSONArray(response.body());
@@ -79,7 +79,7 @@ public class TakeDisclosureThread extends Thread {
                                     stockCode(object.getString("stockCodes")).
                                     title(object.getString("title")).
                                     summary(object.has("summary") ? object.getString("summary") : "").
-                                    publishDate(new Date().toString()).
+                                    publishDate(ZonedDateTime.now(ZoneId.of("Europe/Istanbul")).toString()).
                                     build();
                             ResponseEntity responseEntity = disclosureService.saveDisclosure(disclosureDto);
                             if (responseEntity.getBody() != null) {

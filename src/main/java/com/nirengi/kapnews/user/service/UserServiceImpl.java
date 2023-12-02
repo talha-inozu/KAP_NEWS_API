@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,7 @@ public class UserServiceImpl implements UserService {
 
         emailService.sendEmail("Welcome to KAPNEWSAPI !", userDto.getEmail());
 
+        userDto.setStockCodeList(userDto.getStockCodeList().stream().map(String::toUpperCase).collect(Collectors.toList()));
         UserEntity userEntity = dtoToEntity(userDto);
         UserEntity responseEntity = userRepository.save(userEntity);
         UserDto responseDto = entityToDto(responseEntity);
@@ -111,6 +113,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<UserDto> addStockCodes(Long id, List<String> stockCodes) throws Throwable {
+        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not exist !"));
+        userEntity.getStockCodeList().addAll(stockCodes);
+        UserEntity responseEntity = userRepository.save(userEntity);
+        return ResponseEntity.ok(entityToDto(responseEntity));
+    }
+
+    @Override
     public ResponseEntity deleteUser(Long id) throws Throwable {
         try {
             Optional<UserEntity> userEntity = userRepository.findById(id);
@@ -125,7 +135,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto entityToDto(UserEntity userEntity) {
-
         UserDto userDto = modelMapper.map(userEntity, UserDto.class);
         return userDto;
     }

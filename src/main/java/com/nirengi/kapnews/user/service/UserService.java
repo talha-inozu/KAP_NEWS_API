@@ -19,8 +19,9 @@ public interface UserService {
 
     public ResponseEntity<UserDto> getUserByUsername(String username);
 
-
     public ResponseEntity<UserDto> updateUser(Long id, UserDto userDto) throws Throwable;
+
+    public ResponseEntity<UserDto> addStockCodes(Long id, List<String> stockCodes) throws Throwable;
 
     public ResponseEntity deleteUser(Long id) throws Throwable;
 

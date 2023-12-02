@@ -1,15 +1,15 @@
 package com.nirengi.kapnews.user.dto;
 
-import com.nirengi.kapnews.core.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+
+import com.nirengi.kapnews.core.entity.BaseEntity;
 
 @Data
 @NoArgsConstructor
@@ -32,5 +32,9 @@ public class UserEntity extends BaseEntity {
     private String phoneNumber;
     @Column(name = "password")
     private String password;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> stockCodeList;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> patternList;
 
 }
