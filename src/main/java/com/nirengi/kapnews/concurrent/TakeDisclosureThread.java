@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -31,25 +31,16 @@ import com.nirengi.kapnews.user.dto.UserDto;
 import com.nirengi.kapnews.exception.ThreadException;
 
 @Component
+@RequiredArgsConstructor
 public class TakeDisclosureThread extends Thread {
 
     private static final Logger log = LoggerFactory.getLogger(TakeDisclosureThread.class);
-
-    public boolean isExecute() {
-        return execute;
-    }
-
+    private final KapNewsConstants kapNewsConstants;
+    private final DisclosureService disclosureService;
+    private final EmailService emailService;
+    private final UserService userService;
+    private final AutowireCapableBeanFactory beanFactory;
     private boolean execute = true;
-    @Autowired
-    KapNewsConstants kapNewsConstants;
-    @Autowired
-    DisclosureService disclosureService;
-    @Autowired
-    EmailService emailService;
-    @Autowired
-    UserService userService;
-    @Autowired
-    AutowireCapableBeanFactory beanFactory;
 
     public void run() {
         try {
@@ -99,9 +90,7 @@ public class TakeDisclosureThread extends Thread {
                         List<UserDto> userDtoList = userService.getAllUsers();
 
                         for (UserDto userDto : userDtoList) { // throw it cache  at every day
-                            PrepareAndSendMail prepareAndSendMail = beanFactory.createBean(PrepareAndSendMail.class);
-                            prepareAndSendMail.setNewDisclosures(newDisclosures);
-                            prepareAndSendMail.setUserDto(userDto);
+                            PrepareAndSendMail prepareAndSendMail = new PrepareAndSendMail(emailService, newDisclosures, userDto);
                             chachedThreadPool.execute(prepareAndSendMail);
                         }
                         chachedThreadPool.shutdown();
@@ -131,5 +120,9 @@ public class TakeDisclosureThread extends Thread {
 
     public void resumeThread() {
         this.execute = true;
+    }
+
+    public boolean isExecute() {
+        return execute;
     }
 }
