@@ -1,15 +1,17 @@
 package com.nirengi.kapnews.user.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
 @Data
@@ -39,6 +41,12 @@ public class UserDto {
 
     @NotNull
     private String password;
+
+    @JsonView
+    private List<String> stockCodeList;
+
+    @JsonView
+    private List<String> patternList;
 
     @JsonIgnore
     public String getPassword() {

@@ -30,6 +30,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return ResponseEntity.ok(token);
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong Credentials!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User Not Exist !");
         }
     }
 }

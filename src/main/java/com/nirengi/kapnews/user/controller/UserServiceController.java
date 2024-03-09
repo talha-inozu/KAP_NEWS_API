@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.nirengi.kapnews.user.dto.UserDto;
 import com.nirengi.kapnews.email.service.EmailServiceImpl;
 import com.nirengi.kapnews.user.service.UserService;
+import com.nirengi.kapnews.user.dto.StockCodeRequest;
 
 @RestController
 @RequestMapping("/users")
@@ -43,5 +44,10 @@ public class UserServiceController {
     @PostMapping(value = "/delete/{id}")
     public ResponseEntity deleteUserById(@PathVariable Long id) throws Throwable {
         return userService.deleteUser(id);
+    }
+
+    @PostMapping(value = "/addStockCodes/{id}")
+    public ResponseEntity addStockCodes(@PathVariable Long id, @RequestBody StockCodeRequest stockCodeRequest) throws Throwable {
+        return userService.addStockCodes(id, stockCodeRequest.getStockCodes());
     }
 }
